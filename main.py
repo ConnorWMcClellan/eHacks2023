@@ -1,4 +1,6 @@
 import boto3  # pip install boto3
+import re
+from comm import *
 
 s3 = boto3.resource("s3")
 bucket = s3.Bucket('flyinlions')
@@ -107,6 +109,7 @@ def main():
         faceMatches = response['FaceMatches']
         print('Matching faces')
         match = 0
+
         for match in faceMatches:
             img = match['Face']['ExternalImageId']
             name = img.split('.')
@@ -118,6 +121,11 @@ def main():
                 break
         if match == 1:
             print('Found  :' + i['Key'])
+            splitName = re.sub(r"([A-Z])", r" \1", name[0]).split(None, 1)
+            print(splitName[0])
+            print(splitName[1])
+            s3.Object('flyinlions', i['Key']).delete()
+            #addRecord(splitName[0], splitName[1])
         else:
             print('No match found  :' + i['Key'])
 
