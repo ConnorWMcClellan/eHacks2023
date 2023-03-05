@@ -161,38 +161,34 @@
 
                                                 <div class="clearfix"></div>
 
-                                                <h2>Add Photo here</h2>
+                                                <h2>How its built:</h2>
+                                                <p class="text-muted">
+                                                    Our facial detection uses the openCV library with c++ to match live video frames to a trained facial detection algorithm. This consists of searching each frame for a matching face structure and implementing solutions to prevent over sending data of the same face instance to the recognition.
 
+                                                    Facial recognition is coded in python with Amazon's Rekognition api.
+                                                    The general setup for the AWS Rekognition is to have two S3 Buckets, one with captured images and a second one for an employee image to cross reference with. The employee images are added to a collection within the employee bucket for use with Rekognition. If a face match is found the name of the employee is then sent to the database for processing. The employee images and captured images are uploaded to their respective buckets separately via their own python scripts.
+                                                </p>
                                                 <h2>Successes:</h2>
                                                 <p class="text-muted">
-                                                    What went well..
-                                                    
+                                                    Our program has 4 main modules. Facial detection, facial recognition, database storage, and a front end user GUI.
+
+                                                    The facial detection is set up with a camera designated as an entrance or exit. It will detect human faces and send a cropped image of the face out the the recognition handler.
+
+                                                    For facial recognition we are are sending these images to Amazon's Rekognition to handle face matching. If the sent image is matched to a stored employee we send the time of this event and the name of the employee out to our database.
+
+                                                    Our database is designed to store every "punch" or face detection event at an entrance or exit to be used to calculate weekly hours worked based off of time in the building. Implementing the database uses two separate languages: Python and JavaScript. Python communicates with information given from Amazon’s Rekognition and adds the “punch” to its database’s records. JavaScript pulls data from the database and handles displaying the information to a screen.
+
+                                                    Our front-end GUI mock-up was designed as an example solution for time managers and admins to view database entries, visualize schedules, export timesheets, and manually handle potential conflicts of data. The provided GUI contains both active pages, and pages full of potential growth. Where not all tables are live from our database they all could be. What was not seen in this GUI was the user interface to this system, as seen on the admin dashboard users could get alerts via text or alternatively if they had warnings on their times such as overtime, tardies / extended breaks, or missing clock-ins and clock-outs. We could potentially extend this project by creating an app where employees could resolve or dispute these errors.
+
                                                 </p>
                                                 <h2>Future Implimentations:</h2>
                                                 <p class="text-muted">
-                                                    What we would do with it with more time.
+                                                    We have many stored ideas of further improvements to our demo to accommodate a full real world use case. Some of these include more tools to the user to visualize and export data into standard timesheets, handling unidentified faces as potential security threats, and further developing the capability of our detection and recognition for large flows of people.
                                                 </p>
 
                                             </div>
 
-                                            <div class="col-lg-5 offset-lg-1">
-                                                <h4 class="header-title mt-0 mb-4">Blockqoutes</h4>
-
-                                                <blockquote class="blockquote font-16" id="blockquote-title-tour">
-                                                    <p>A qoute from the weekend.</p>
-                                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                                </blockquote>
-
-                                                <blockquote class="blockquote font-16 text-center border-0">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                                </blockquote>
-
-                                                <blockquote class="blockquote font-16 blockquote-reverse">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                                    <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                                                </blockquote>
-                                            </div>
+                                            
                                         </div>
 
 
