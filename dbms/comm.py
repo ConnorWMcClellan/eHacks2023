@@ -37,8 +37,4 @@ def addRecord(fName, lName):
     db.records.insert_one({"lastName":lName,"firstName":fName, "date": d})
 
     #Prints all of "records" collection
-    results = collection.find({})
-    for iter in results:
-        print(iter)
-
-display()
+    display()

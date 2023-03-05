@@ -10,6 +10,7 @@ async function main()
     {
         await client.connect();
         await listDatabases(client);
+        await listCollections(client);
     }
     catch (e)
     {
@@ -29,4 +30,26 @@ async function listDatabases(client)
     console.log("Databases:");
 
     list.databases.forEach(db => {console.log(`- ${db.name}`)})
+}
+
+async function listCollections(client)
+{
+    //C. McCellen's attempt
+    //const db = client.db('ats');
+    //const collections = await db.listCollections().toArray();
+    //console.log(collections[2])
+    //if(collections[2].name === 'records')
+    //{
+    //   const data = db.collection('records');
+    //   const cursor = data.find({})
+
+    //   console.log(cursor);
+    //}
+
+    const database = client.db("ats");
+    const col = database.collection("records");
+    let searchptr = await col.find({});
+    let result = await searchptr.toArray();
+    console.table(result);
+
 }
