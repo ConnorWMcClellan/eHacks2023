@@ -85,49 +85,55 @@ def iterate_bucket_items(bucket):
 
 
 def main():
-    collection_id = 'collection-id'
-    s3 = boto3.resource("s3")
-    employeeBucket = 'flyinlions'
-    collection_id = 'Employees'
+    while True:
+        collection_id = 'collection-id'
+        s3 = boto3.resource("s3")
+        employeeBucket = 'flyinlions'
+        collection_id = 'Employees'
 
-    #indexed_faces_count = add_faces_to_collection(bucket, photo, collection_id)
-    threshold = 70
-    maxFaces = 2
-    client = boto3.client('rekognition')
+        #indexed_faces_count = add_faces_to_collection(bucket, photo, collection_id)
+        threshold = 70
+        maxFaces = 2
+        client = boto3.client('rekognition')
 
-    collection = []
+        collection = []
 
-    for i in iterate_bucket_items(bucket='flyinlions'):
-        #collection.append(i['Key'])
+        for i in iterate_bucket_items(bucket='flyinlions'):
+            #collection.append(i['Key'])
 
-    #for i in collection:
-        response = client.search_faces_by_image(CollectionId=collection_id,
-                                                Image={'S3Object': {'Bucket': employeeBucket, 'Name': i['Key']}},
-                                                FaceMatchThreshold=threshold,
-                                                MaxFaces=maxFaces)
+        #for i in collection:
+            try:
+                response = client.search_faces_by_image(CollectionId=collection_id,
+                                                    Image={'S3Object': {'Bucket': employeeBucket, 'Name': i['Key']}},
+                                                    FaceMatchThreshold=threshold,
+                                                    MaxFaces=maxFaces)
 
-        faceMatches = response['FaceMatches']
-        print('Matching faces')
-        match = 0
+                faceMatches = response['FaceMatches']
+                print('Matching faces')
+                match = 0
 
-        for match in faceMatches:
-            img = match['Face']['ExternalImageId']
-            name = img.split('.')
-            print(name[0])
-            print('FaceId:' + match['Face']['FaceId'])
-            print('Similarity: ' + "{:.2f}".format(match['Similarity']) + "%")
-            if match['Similarity'] >= 70:
-                match = 1
-                break
-        if match == 1:
-            print('Found  :' + i['Key'])
-            splitName = re.sub(r"([A-Z])", r" \1", name[0]).split(None, 1)
-            print(splitName[0])
-            print(splitName[1])
-            s3.Object('flyinlions', i['Key']).delete()
-            #addRecord(splitName[0], splitName[1])
-        else:
-            print('No match found  :' + i['Key'])
+                for match in faceMatches:
+                    img = match['Face']['ExternalImageId']
+                    name = img.split('.')
+                    #print(name[0])
+                    #print('FaceId:' + match['Face']['FaceId'])
+                    #print('Similarity: ' + "{:.2f}".format(match['Similarity']) + "%")
+                    if match['Similarity'] >= 70:
+                        match = 1
+                        break
+                if match == 1:
+                    print('Found  :' + i['Key'])
+                    splitName = re.sub(r"([A-Z])", r" \1", name[0]).split(None, 1)
+                    #print(splitName[0])
+                    #print(splitName[1])
+                    s3.Object('flyinlions', i['Key']).delete()
+                    addRecord(splitName[0], splitName[1])
+                else:
+                    #print('No match found  :' + i['Key'])
+                    s3.Object('flyinlions', i['Key']).delete()
+
+            except:
+                print("No Face Detected")
 
 
 if __name__ == "__main__":

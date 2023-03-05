@@ -39,7 +39,7 @@ def addRecord(fName, lName):
 
     #Prints all of "records" collection
     results = collection.find({})
-    for iter in results:
-        print(iter)
+    #for iter in results:
+        #print(iter)
 
 #display()
