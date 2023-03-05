@@ -2,25 +2,43 @@ import pymongo
 from pymongo import MongoClient
 import datetime
 
-try:
-    conn = MongoClient()
-    cluster = MongoClient('mongodb+srv://UmbranDrake:eHacks23FlyinLions@atscluster.cez6evd.mongodb.net/?retryWrites=true&w=majority')
-    print("Successful connection!")
-except:
-    print("Oh no, connection failed!")
 
-db = cluster["ats"]
-collection = db["records"]
+def display():
+    try:
+        conn = MongoClient()
+        cluster = MongoClient('mongodb+srv://UmbranDrake:eHacks23FlyinLions@atscluster.cez6evd.mongodb.net/?retryWrites=true&w=majority')
+        print("Successful connection!")
+    except:
+        print("Oh no, connection failed!")
 
-lName = ""
-fName = ""
+    db = cluster["ats"]
+    collection = db["records"]
 
-d = datetime.datetime.utcnow()
+    #Prints all of "records" collection
+    results = collection.find({})
+    for iter in results:
+        print(iter)
 
-#Inserts a record
-db.records.insert_one({"lastName":lName,"firstName":fName, "date": d})
 
-#Prints all of "records" collection
-results = collection.find({})
-for iter in results:
-    print(iter)
+def addRecord(fName, lName):
+    try:
+        conn = MongoClient()
+        cluster = MongoClient('mongodb+srv://UmbranDrake:eHacks23FlyinLions@atscluster.cez6evd.mongodb.net/?retryWrites=true&w=majority')
+        print("Successful connection!")
+    except:
+        print("Oh no, connection failed!")
+
+    db = cluster["ats"]
+    collection = db["records"]
+
+    d = datetime.datetime.utcnow()
+
+    #Inserts a record
+    db.records.insert_one({"lastName":lName,"firstName":fName, "date": d})
+
+    #Prints all of "records" collection
+    results = collection.find({})
+    for iter in results:
+        print(iter)
+
+display()
